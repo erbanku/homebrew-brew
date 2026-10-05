@@ -13,19 +13,11 @@ cask "upic" do
   auto_updates true
 
   app "uPic.app"
-  shimscript = "#{staged_path}/upic.wrapper.sh"
-  binary shimscript, target: "upic"
-  
+  command_wrapper "upic", executable: "#{appdir}/uPic.app/Contents/MacOS/uPic"
+
   livecheck do
     url :url
     strategy :github_latest
-  end
-
-  preflight do
-    File.write shimscript, <<~EOS
-      #!/bin/bash
-      '#{appdir}/uPic.app/Contents/MacOS/uPic' "$@"
-    EOS
   end
 
   zap trash: [
